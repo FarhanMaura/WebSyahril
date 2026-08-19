@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net" version="21.0.0">
+<diagram id="ACT" name="Activity - DSS Bansos Palembang">
+<mxGraphModel dx="1000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1400" math="0" shadow="1">
+<root>
+<mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+
+<!-- START -->
+<mxCell id="s" value="" style="ellipse;html=1;shape=doubleEllipse;whiteSpace=wrap;aspect=fixed;fillColor=#0F172A;strokeColor=#38BDF8;" vertex="1" parent="1"><mxGeometry x="390" y="30" width="50" height="50" as="geometry"/></mxCell>
+
+<!-- A1 -->
+<mxCell id="a1" value="Pengguna Membuka Dashboard Web" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A8A;strokeColor=#60A5FA;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="120" width="270" height="50" as="geometry"/></mxCell>
+
+<!-- A2 -->
+<mxCell id="a2" value="Memilih Sumber Dataset&#xa;(2023/2024 | 2025/2026 | Upload CSV)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1E3A8A;strokeColor=#60A5FA;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="210" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- D1: valid? -->
+<mxCell id="d1" value="Data Valid &amp; Lengkap?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#78350f;strokeColor=#FCD34D;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1"><mxGeometry x="295" y="315" width="240" height="70" as="geometry"/></mxCell>
+
+<!-- A3: error -->
+<mxCell id="aerr" value="Tampilkan Pesan Error&#xa;(Kolom Tidak Sesuai)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7f1d1d;strokeColor=#F87171;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="600" y="315" width="220" height="60" as="geometry"/></mxCell>
+
+<!-- A4 -->
+<mxCell id="a4" value="Menjalankan Min-Max Normalization&#xa;(MinMaxScaler → Rentang [0,1])" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a2e1a;strokeColor=#4ADE80;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="430" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- A5 -->
+<mxCell id="a5" value="Menghitung Composite Vulnerability Index (CVI)&#xa;untuk Setiap Kecamatan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a2e1a;strokeColor=#4ADE80;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="530" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- A6 -->
+<mxCell id="a6" value="Menjalankan Algoritma K-Means Clustering&#xa;(K=3, random_state=42, n_init=10)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a2e1a;strokeColor=#4ADE80;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="630" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- A7 -->
+<mxCell id="a7" value="Mengurutkan Klaster berdasarkan CVI&#xa;(Cluster 0 = Prioritas Tinggi/Darurat)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a2e1a;strokeColor=#4ADE80;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="730" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- Fork -->
+<mxCell id="fork" value="" style="shape=mxgraph.flowchart.start_2;fillColor=#1E293B;strokeColor=#38BDF8;" vertex="1" parent="1"><mxGeometry x="370" y="840" width="90" height="20" as="geometry"/></mxCell>
+
+<!-- Parallel A -->
+<mxCell id="pa1" value="Tampilkan Peta Spasial Folium&#xa;&amp; Bar/Radar Chart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#38BDF8;fontColor=#FFFFFF;fontSize=11;arcSize=15;" vertex="1" parent="1"><mxGeometry x="70" y="910" width="210" height="60" as="geometry"/></mxCell>
+<mxCell id="pa2" value="Tampilkan Matriks Jarak Euclidean&#xa;&amp; Tabel Normalisasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#38BDF8;fontColor=#FFFFFF;fontSize=11;arcSize=15;" vertex="1" parent="1"><mxGeometry x="295" y="910" width="210" height="60" as="geometry"/></mxCell>
+<mxCell id="pa3" value="Hitung Silhouette, DBI, CHI&#xa;&amp; Grafik Elbow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0F172A;strokeColor=#38BDF8;fontColor=#FFFFFF;fontSize=11;arcSize=15;" vertex="1" parent="1"><mxGeometry x="520" y="910" width="210" height="60" as="geometry"/></mxCell>
+
+<!-- Join -->
+<mxCell id="join" value="" style="shape=mxgraph.flowchart.start_2;fillColor=#1E293B;strokeColor=#38BDF8;" vertex="1" parent="1"><mxGeometry x="370" y="1020" width="90" height="20" as="geometry"/></mxCell>
+
+<!-- D2: Simulasi? -->
+<mxCell id="d2" value="Pengguna Ingin Simulasi&#xa;Alokasi Bansos?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#78350f;strokeColor=#FCD34D;fontColor=#FFFFFF;fontSize=12;" vertex="1" parent="1"><mxGeometry x="295" y="1080" width="240" height="80" as="geometry"/></mxCell>
+
+<!-- A8 -->
+<mxCell id="a8" value="Input Pagu Anggaran (Rp) &amp; Kuota (KK)&#xa;→ Hitung Final Weight &amp; Alokasi per Kecamatan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#78350f;strokeColor=#FCD34D;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="1210" width="270" height="65" as="geometry"/></mxCell>
+
+<!-- A9 -->
+<mxCell id="a9" value="Generate Laporan Excel (.xlsx)&#xa;atau Draft Narasi Bab 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1a2e1a;strokeColor=#4ADE80;fontColor=#FFFFFF;fontSize=12;arcSize=15;" vertex="1" parent="1"><mxGeometry x="280" y="1325" width="270" height="60" as="geometry"/></mxCell>
+
+<!-- END -->
+<mxCell id="e" value="" style="ellipse;html=1;shape=doubleEllipse;whiteSpace=wrap;aspect=fixed;fillColor=#7f1d1d;strokeColor=#F87171;" vertex="1" parent="1"><mxGeometry x="390" y="1430" width="50" height="50" as="geometry"/></mxCell>
+
+<!-- ARROWS -->
+<mxCell id="arr1" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="s" target="a1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr2" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a1" target="a2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr3" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a2" target="d1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr4" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#F87171;strokeWidth=2;fontSize=11;fontStyle=1;" edge="1" parent="1" source="d1" target="aerr"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr4b" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#F87171;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="aerr" target="a2"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="710" y="240"/><mxPoint x="415" y="240"/></Array></mxGeometry></mxCell>
+<mxCell id="arr5" value="Ya" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#4ADE80;strokeWidth=2;fontSize=11;fontStyle=1;" edge="1" parent="1" source="d1" target="a4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr6" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a4" target="a5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr7" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a5" target="a6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr8" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a6" target="a7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr9" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a7" target="fork"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr10" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="fork" target="pa1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr11" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="fork" target="pa2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr12" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="fork" target="pa3"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr13" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="pa1" target="join"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr14" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="pa2" target="join"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr15" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="pa3" target="join"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr16" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="join" target="d2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr17" value="Ya" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#FCD34D;strokeWidth=2;fontSize=11;fontStyle=1;" edge="1" parent="1" source="d2" target="a8"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr18" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#38BDF8;strokeWidth=2;" edge="1" parent="1" source="a8" target="a9"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="arr19" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#94A3B8;strokeWidth=2;fontSize=11;fontStyle=1;exitX=1;exitY=0.5;" edge="1" parent="1" source="d2" target="a9"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="600" y="1120"/><mxPoint x="600" y="1355"/></Array></mxGeometry></mxCell>
+<mxCell id="arr20" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#4ADE80;strokeWidth=2;" edge="1" parent="1" source="a9" target="e"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+</root>
+</mxGraphModel>
+</diagram>
+</mxfile>

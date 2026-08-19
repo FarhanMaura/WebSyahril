@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 880" width="1280" height="880">
+<defs>
+  <style>
+    text { font-family: "Arial", "Helvetica", sans-serif; }
+    .box { fill: #F4F4F4; stroke: #000000; stroke-width: 1.8; }
+    .box-white { fill: #FFFFFF; stroke: #000000; stroke-width: 1.4; }
+    .box-active { fill: #DCDCDC; stroke: #000000; stroke-width: 2.0; font-weight: bold; }
+    .line { stroke: #000000; stroke-width: 1.4; }
+    .lbl-title { font-size: 12px; font-weight: bold; fill: #000000; text-anchor: middle; }
+    .lbl-header { font-size: 15.5px; font-weight: bold; fill: #000000; text-anchor: middle; letter-spacing: 0.5px; }
+    .lbl-sub { font-size: 9.5px; font-weight: bold; fill: #000000; text-anchor: middle; }
+    .lbl-left { font-size: 10px; font-weight: bold; fill: #000000; }
+    .lbl-small { font-size: 8.5px; fill: #000000; }
+  </style>
+</defs>
+<rect x="2" y="2" width="1276" height="876" fill="#FFFFFF" stroke="#000000" stroke-width="2.5"/>
+<rect x="2" y="2" width="1276" height="75" class="box"/>
+<text x="640.0" y="24" class="lbl-header">HEADER SISTEM</text>
+<text x="640.0" y="42" font-size="13px" font-weight="bold" fill="#000000" text-anchor="middle">DSS PEMETAAN WILAYAH PENERIMA BANTUAN SOSIAL KOTA PALEMBANG</text>
+<text x="640.0" y="57" font-size="9.5px" fill="#444444" text-anchor="middle">Sistem Pendukung Keputusan Berbasis Algoritma K-Means Clustering Menggunakan Data Pemutakhiran Bagian Kesra &amp; BPS Kota Palembang</text>
+<text x="640.0" y="70" font-size="9px" font-weight="bold" fill="#000000" text-anchor="middle">[ BADGE: M. Syahril (NIM: 221420089) | Mitra Data: Bagian Kesra &amp; BPS Kota Palembang ]</text>
+<rect x="2.0" y="77" width="212.66666666666666" height="34" class="box-white"/>
+<text x="108.33333333333333" y="98" font-size="10.5" font-weight="normal" fill="#000000" text-anchor="middle">DASHBOARD & PETA</text>
+<rect x="214.66666666666666" y="77" width="212.66666666666666" height="34" class="box-white"/>
+<text x="321.0" y="98" font-size="10.5" font-weight="normal" fill="#000000" text-anchor="middle">SIMULATOR DSS</text>
+<rect x="427.3333333333333" y="77" width="212.66666666666666" height="34" class="box-white"/>
+<text x="533.6666666666666" y="98" font-size="10.5" font-weight="normal" fill="#000000" text-anchor="middle">ANALISIS TREN</text>
+<rect x="640.0" y="77" width="212.66666666666666" height="34" class="box-white"/>
+<text x="746.3333333333334" y="98" font-size="10.5" font-weight="normal" fill="#000000" text-anchor="middle">PROFILER KECAMATAN</text>
+<rect x="852.6666666666666" y="77" width="212.66666666666666" height="34" class="box-white"/>
+<text x="959.0" y="98" font-size="10.5" font-weight="normal" fill="#000000" text-anchor="middle">MATRIKS EUCLIDEAN</text>
+<rect x="1065.3333333333333" y="77" width="212.66666666666666" height="34" class="box-active"/>
+<text x="1171.6666666666665" y="98" font-size="10.5" font-weight="bold" fill="#000000" text-anchor="middle">VALIDASI & EXPORT</text>
+<rect x="2" y="111" width="246" height="767" class="box"/>
+<text x="125.0" y="133" class="lbl-title">SIDEBAR / CONTROL PANEL</text>
+<line x1="12" y1="141" x2="238" y2="141" class="line"/>
+<rect x="10" y="149" width="228" height="95" class="box-white"/>
+<text x="125.0" y="165" class="lbl-sub">PILIH SUMBER DATA</text>
+<text x="18" y="183" class="lbl-small">[ o ] Data 2025/2026 (Pemutakhiran)</text>
+<text x="18" y="201" class="lbl-small">[   ] Data 2023/2024 (Data Historis)</text>
+<text x="18" y="219" class="lbl-small">[   ] Upload File CSV/Excel Custom</text>
+<text x="18" y="235" font-size="8px" fill="#222222">[ STATUS: DATA 2025/2026 AKTIF ]</text>
+<rect x="10" y="251" width="228" height="120" class="box-white"/>
+<text x="125.0" y="267" class="lbl-sub">UNDUH MASTER DATA SEKUNDER</text>
+<rect x="16" y="275" width="216" height="22" class="box"/>
+<text x="125.0" y="289" font-size="8.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ Master Data Kesra 2025 (.xlsx) ]</text>
+<rect x="16" y="303" width="216" height="22" class="box"/>
+<text x="125.0" y="317" font-size="8.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ Master Data Kesra 2023 (.xlsx) ]</text>
+<rect x="16" y="331" width="216" height="22" class="box"/>
+<text x="125.0" y="345" font-size="8.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ Download Template CSV ]</text>
+<rect x="10" y="379" width="228" height="68" class="box-white"/>
+<text x="125.0" y="396" class="lbl-sub">PARAMETER K-MEANS</text>
+<text x="125.0" y="413" class="lbl-small">Jumlah Cluster (K) = 3</text>
+<line x1="24" y1="426" x2="224" y2="426" class="line"/>
+<circle cx="62" cy="426" r="4" fill="#000000"/>
+<text x="24" y="438" font-size="7.5px">K=2</text>
+<text x="224" y="438" font-size="7.5px" text-anchor="end">K=6</text>
+<rect x="10" y="455" width="228" height="255" class="box-white"/>
+<text x="125.0" y="471" class="lbl-sub">ATRIBUT TERPILIH (INDIKATOR BPS)</text>
+<text x="18" y="487" font-size="8px" fill="#444444">Pilih Atribut Klasterisasi (Multiselect):</text>
+<rect x="16" y="497" width="216" height="22" class="box"/>
+<text x="22" y="512" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Jumlah Penduduk Miskin</text>
+<rect x="16" y="525" width="216" height="22" class="box"/>
+<text x="22" y="540" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Tingkat Pengangguran</text>
+<rect x="16" y="553" width="216" height="22" class="box"/>
+<text x="22" y="568" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Pendapatan Rata-Rata</text>
+<rect x="16" y="581" width="216" height="22" class="box"/>
+<text x="22" y="596" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Kepadatan Penduduk</text>
+<rect x="16" y="609" width="216" height="22" class="box"/>
+<text x="22" y="624" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Akses Fasilitas Publik</text>
+<rect x="16" y="637" width="216" height="22" class="box"/>
+<text x="22" y="652" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Jumlah KK Penerima Bansos</text>
+<rect x="16" y="665" width="216" height="22" class="box"/>
+<text x="22" y="680" font-size="8.5px" font-weight="bold" fill="#000000">[ x ] Indeks Pemb. Manusia (IPM)</text>
+<rect x="10" y="728" width="228" height="138" class="box-white"/>
+<text x="125.0" y="746" class="lbl-sub">INFORMASI PENELITI</text>
+<text x="125.0" y="764" font-size="9.5px" font-weight="bold" fill="#000000" text-anchor="middle">M. Syahril</text>
+<text x="125.0" y="778" class="lbl-small" text-anchor="middle">NIM: 221420089</text>
+<text x="125.0" y="792" class="lbl-small" text-anchor="middle">Program Studi Sistem Informasi</text>
+<text x="125.0" y="806" class="lbl-small" text-anchor="middle">Fakultas Ilmu Komputer</text>
+<text x="125.0" y="820" class="lbl-small" text-anchor="middle">Universitas Bina Darma</text>
+<text x="125.0" y="843" font-size="8px" fill="#555555" text-anchor="middle">[ Mitra: Bagian Kesra Setda Palembang ]</text>
+<rect x="254.0" y="115" width="201.2" height="50" class="box-white"/>
+<text x="354.6" y="133" font-size="8.5" font-weight="bold" fill="#000000" text-anchor="middle">TOTAL WILAYAH (2025/2026)</text>
+<text x="354.6" y="153" font-size="12" font-weight="bold" fill="#000000" text-anchor="middle">[ 18 Kec. ]</text>
+<rect x="458.2" y="115" width="201.2" height="50" class="box-white"/>
+<text x="558.8" y="133" font-size="8.5" font-weight="bold" fill="#000000" text-anchor="middle">PRIORITAS TINGGI (DARURAT)</text>
+<text x="558.8" y="153" font-size="12" font-weight="bold" fill="#000000" text-anchor="middle">[ 4 Kec. ]</text>
+<rect x="662.4" y="115" width="201.2" height="50" class="box-white"/>
+<text x="763.0" y="133" font-size="8.5" font-weight="bold" fill="#000000" text-anchor="middle">PRIORITAS SEDANG</text>
+<text x="763.0" y="153" font-size="12" font-weight="bold" fill="#000000" text-anchor="middle">[ 8 Kec. ]</text>
+<rect x="866.5999999999999" y="115" width="201.2" height="50" class="box-white"/>
+<text x="967.1999999999999" y="133" font-size="8.5" font-weight="bold" fill="#000000" text-anchor="middle">PRIORITAS RENDAH (MANDIRI)</text>
+<text x="967.1999999999999" y="153" font-size="12" font-weight="bold" fill="#000000" text-anchor="middle">[ 6 Kec. ]</text>
+<rect x="1070.8" y="115" width="201.2" height="50" class="box-white"/>
+<text x="1171.3999999999999" y="133" font-size="8.5" font-weight="bold" fill="#000000" text-anchor="middle">SILHOUETTE SCORE</text>
+<text x="1171.3999999999999" y="153" font-size="12" font-weight="bold" fill="#000000" text-anchor="middle">[ 0.542 ]</text>
+<rect x="254" y="171" width="1018" height="42" class="box"/>
+<text x="763.0" y="189" class="lbl-title">PEMBUKTIAN ILMIAH K OPTIMAL &amp; VALIDASI MODEL</text>
+<text x="763.0" y="205" class="lbl-small">Metrik evaluasi untuk membuktikan secara akademis di hadapan dosen penguji bahwa klasterisasi presisi dan optimal.</text>
+<rect x="254" y="219" width="506.0" height="165" class="box"/>
+<text x="507.0" y="239" class="lbl-title">GRAFIK METODE ELBOW (WCSS vs K = 1..8)</text>
+<rect x="264" y="247" width="486.0" height="109" class="box-white"/>
+<text x="507.0" y="306.5" class="lbl-header" fill="#777777">[ PLOTLY ELBOW CHART - TITIK SIKU K=3 ]</text>
+<rect x="264" y="360" width="486.0" height="18" class="box-white"/>
+<text x="507.0" y="372" font-size="8.5px" font-weight="bold" fill="#000000" text-anchor="middle">💡 Metode Elbow: Titik Siku Terbaik Pada K=3 (WCSS Optimal)</text>
+<rect x="766.0" y="219" width="506.0" height="165" class="box"/>
+<text x="1019.0" y="239" class="lbl-title">GRAFIK SILHOUETTE COEFFICIENT (K = 1..8)</text>
+<rect x="778.0" y="247" width="486.0" height="109" class="box-white"/>
+<text x="1019.0" y="306.5" class="lbl-header" fill="#777777">[ PLOTLY SILHOUETTE SCORE CHART ]</text>
+<rect x="778.0" y="360" width="486.0" height="18" class="box-white"/>
+<text x="1019.0" y="372" font-size="8.5px" font-weight="bold" fill="#000000" text-anchor="middle">💡 Silhouette Score (K=3): 0.5420 (Struktur Pemisahan Kuat)</text>
+<rect x="254" y="390" width="336.0" height="52" class="box-white"/>
+<text x="422.0" y="408" class="lbl-sub">SILHOUETTE SCORE (PEMISAHAN)</text>
+<text x="422.0" y="428" font-size="11.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ 0.5420 - KUAT ]</text>
+<rect x="595.0" y="390" width="336.0" height="52" class="box-white"/>
+<text x="763.0" y="408" class="lbl-sub">DAVIES-BOULDIN INDEX (KERAPATAN)</text>
+<text x="763.0" y="428" font-size="11.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ 0.6120 - OPTIMAL &lt; 1.0 ]</text>
+<rect x="936.0" y="390" width="336.0" height="52" class="box-white"/>
+<text x="1104.0" y="408" class="lbl-sub">CALINSKI-HARABASZ INDEX (SEBARAN)</text>
+<text x="1104.0" y="428" font-size="11.5px" font-weight="bold" fill="#000000" text-anchor="middle">[ 48.5 - TINGGI ]</text>
+<rect x="254" y="448" width="1018" height="135" class="box"/>
+<text x="763.0" y="466" class="lbl-title">TABEL PERBANDINGAN EVALUASI BERBAGAI JUMLAH K (1 - 8)</text>
+<rect x="262" y="474" width="1002" height="101" class="box-white"/>
+<rect x="262" y="474" width="1002" height="22" class="box"/>
+<text x="362.2" y="489" class="lbl-sub">K (KLASTER)</text>
+<text x="562.6" y="489" class="lbl-sub">WCSS_INERTIA</text>
+<line x1="462.4" y1="474" x2="462.4" y2="575" class="line"/>
+<text x="763.0" y="489" class="lbl-sub">SILHOUETTE_SCORE</text>
+<line x1="662.8" y1="474" x2="662.8" y2="575" class="line"/>
+<text x="963.4000000000001" y="489" class="lbl-sub">DAVIES_BOULDIN_SCORE</text>
+<line x1="863.2" y1="474" x2="863.2" y2="575" class="line"/>
+<text x="1163.8" y="489" class="lbl-sub">CALINSKI_HARABASZ_SCORE</text>
+<line x1="1063.6" y1="474" x2="1063.6" y2="575" class="line"/>
+<text x="763.0" y="540.5" font-size="11px" font-weight="bold" fill="#777777" text-anchor="middle">[ BARIS DATA EVALUASI METRIK K=1 SAMPAI K=8 ]</text>
+<rect x="254" y="589" width="1018" height="283" class="box"/>
+<text x="763.0" y="609" class="lbl-title">EXPORT LAPORAN LENGKAP KE EXCEL (.XLSX)</text>
+<rect x="266" y="617" width="495.0" height="32" class="box-white"/>
+<text x="513.5" y="637" font-size="10px" font-weight="bold" fill="#000000" text-anchor="middle">[ 📊 DOWNLOAD HASIL CLUSTERING 2025/2026 (.XLSX) ]</text>
+<rect x="765.0" y="617" width="495.0" height="32" class="box-white"/>
+<text x="1012.5" y="637" font-size="10px" font-weight="bold" fill="#000000" text-anchor="middle">[ 🏛️ DOWNLOAD MASTER DATA KESRA 2025/2026 (.XLSX) ]</text>
+</svg>

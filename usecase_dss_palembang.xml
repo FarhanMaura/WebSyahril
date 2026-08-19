@@ -1,0 +1,62 @@
+<mxfile host="app.diagrams.net" version="21.0.0">
+<diagram id="UC" name="Use Case - DSS Bansos Palembang">
+<mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="1">
+<root>
+<mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+
+<!-- System Boundary -->
+<mxCell id="sys" value="Sistem DSS Pemetaan Bansos Palembang" style="text;html=1;strokeColor=#000000;fillColor=none;align=center;verticalAlign=top;spacingTop=5;fontSize=16;fontStyle=1;fontColor=#000000;swimlane=0;" vertex="1" parent="1"><mxGeometry x="200" y="60" width="750" height="700" as="geometry"/></mxCell>
+
+<!-- Actor: Admin Kesra -->
+<mxCell id="a1" value="Admin / Petugas Kesra" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="60" y="320" width="60" height="120" as="geometry"/></mxCell>
+
+<!-- Actor: Pimpinan Daerah -->
+<mxCell id="a2" value="Pimpinan / Pengambil Keputusan" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=13;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="1020" y="320" width="60" height="120" as="geometry"/></mxCell>
+
+<!-- Use Cases -->
+<mxCell id="uc1" value="Memilih Dataset (2023/2025/Custom)" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="100" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc2" value="Upload CSV Data Kustom" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="180" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc3" value="Menjalankan K-Means Clustering" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="270" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc8" value="Analisis Tren Multi-Tahun" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="440" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc10" value="Melihat Validasi Ilmiah" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="530" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc12" value="Download Draft Bab 4 Skripsi" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="260" y="620" width="240" height="60" as="geometry"/></mxCell>
+
+<mxCell id="uc6" value="Simulasi Alokasi Anggaran Bansos" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="450" y="350" width="240" height="60" as="geometry"/></mxCell>
+
+<mxCell id="uc4" value="Melihat Peta Spasial Zonasi" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="100" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc5" value="Melihat Matriks Jarak Euclidean" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="180" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc7" value="Melihat Grafik Elbow &amp; Silhouette" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="270" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc9" value="Profiler Per-Kecamatan" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="440" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc11" value="Download Laporan Excel" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="530" width="240" height="60" as="geometry"/></mxCell>
+<mxCell id="uc13" value="Melihat Radar Chart Klaster" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;fontStyle=1;fontSize=12;strokeWidth=1.5;" vertex="1" parent="1"><mxGeometry x="640" y="620" width="240" height="60" as="geometry"/></mxCell>
+
+<!-- Actor 1 -> Use Cases -->
+<mxCell id="l1" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc1"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l2" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l3" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc3"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l4" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l5" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc8"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l6" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc10"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l7" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a1" target="uc12"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<!-- Actor 2 -> Use Cases -->
+<mxCell id="l8" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a2" target="uc4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l9" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a2" target="uc6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l10" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a2" target="uc9"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l11" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a2" target="uc11"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="l12" style="endArrow=none;html=1;strokeColor=#000000;strokeWidth=1.5;edgeStyle=none;" edge="1" parent="1" source="a2" target="uc13"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<!-- Include relations -->
+<mxCell id="inc1" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontStyle=2;edgeStyle=none;" edge="1" parent="1" source="uc3" target="uc4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="inc2" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontStyle=2;edgeStyle=none;" edge="1" parent="1" source="uc3" target="uc5"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="inc3" value="&amp;lt;&amp;lt;include&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontStyle=2;edgeStyle=none;" edge="1" parent="1" source="uc3" target="uc7"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<!-- Extend relations -->
+<mxCell id="ext1" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontStyle=2;edgeStyle=none;" edge="1" parent="1" source="uc10" target="uc11"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="ext2" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="endArrow=open;endSize=12;dashed=1;html=1;strokeColor=#000000;strokeWidth=1.5;fontSize=11;fontStyle=2;edgeStyle=none;" edge="1" parent="1" source="uc12" target="uc11"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+</root>
+</mxGraphModel>
+</diagram>
+</mxfile>

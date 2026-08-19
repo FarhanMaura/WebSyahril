@@ -1,0 +1,67 @@
+<mxfile host="app.diagrams.net" version="21.0.0">
+<diagram id="Flowchart" name="Flowchart - DSS Bansos Palembang">
+<mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
+<root>
+<mxCell id="0"/>
+<mxCell id="1" parent="0"/>
+
+<!-- Nodes -->
+<mxCell id="n1" value="Start" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="364" y="40" width="100" height="50" as="geometry"/></mxCell>
+
+<mxCell id="n2" value="Input / Pilih Dataset&amp;#xa;(BPS 2023-2025)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="320" y="130" width="188" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n3" value="Validasi Data?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="344" y="230" width="140" height="80" as="geometry"/></mxCell>
+
+<mxCell id="n4" value="Tampilkan Error" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="540" y="240" width="160" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n5" value="Data Preprocessing &amp;amp;&amp;#xa;Normalisasi Min-Max" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="329" y="350" width="170" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n6" value="Hitung Composite&amp;#xa;Vulnerability Index (CVI)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="329" y="450" width="170" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n7" value="Proses K-Means Clustering&amp;#xa;(Penentuan Zonasi Prioritas)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="329" y="550" width="170" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n8" value="Simpan ke&amp;#xa;Database" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="570" y="540" width="100" height="80" as="geometry"/></mxCell>
+
+<mxCell id="n9" value="Visualisasi Peta Spasial&amp;#xa;&amp;amp; Grafik Profiler" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="320" y="650" width="188" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n10" value="Jalankan&amp;#xa;Simulasi Bansos?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="344" y="750" width="140" height="80" as="geometry"/></mxCell>
+
+<mxCell id="n11" value="Input Pagu Anggaran&amp;#xa;&amp;amp; Kuota (KK)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="526" y="760" width="188" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n12" value="Hitung Distribusi &amp;amp;&amp;#xa;Alokasi Per Kecamatan" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="535" y="860" width="170" height="60" as="geometry"/></mxCell>
+
+<mxCell id="n13" value="Generate Laporan&amp;#xa;Excel &amp;amp; Draft Narasi" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="339" y="850" width="150" height="70" as="geometry"/></mxCell>
+
+<mxCell id="n14" value="End" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;strokeWidth=2;" vertex="1" parent="1"><mxGeometry x="364" y="960" width="100" height="50" as="geometry"/></mxCell>
+
+<!-- Edges -->
+<mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n1" target="n2"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n2" target="n3"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="e3_no" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n3" target="n4"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="n4" target="n2"><mxGeometry relative="1" as="geometry">
+    <Array as="points">
+        <mxPoint x="620" y="160"/>
+    </Array>
+</mxGeometry></mxCell>
+
+<mxCell id="e3_yes" value="Ya" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n3" target="n5"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n6" target="n7"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="n7" target="n8"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n7" target="n9"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n9" target="n10"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="e10_yes" value="Ya" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n10" target="n11"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n11" target="n12"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n12" target="n13"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="e10_no" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n10" target="n13"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+<mxCell id="e13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;" edge="1" parent="1" source="n13" target="n14"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+</root>
+</mxGraphModel>
+</diagram>
+</mxfile>
