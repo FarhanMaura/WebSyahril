@@ -2,16 +2,41 @@
 
 Project Skripsi: **M. Syahril (NIM: 221420089)**  
 Program Studi Teknik Informatika - Universitas Bina Darma Palembang  
+Mitra Data: Bagian Kesejahteraan Rakyat (Kesra) Setda & BPS Kota Palembang  
 
 ---
 
 ## 📌 Ringkasan Sistem
-Aplikasi **Dashboard System Support (DSS)** berbasis web ini dirancang untuk memetakan **18 Kecamatan di Kota Palembang** ke dalam **3 Zona Prioritas Penyaluran Bantuan Sosial (Bansos)** secara otomatis berbasis data statistik resmi BPS dan Dinas Sosial Kota Palembang menggunakan **Algoritma K-Means Clustering**.
+Aplikasi **Decision Support System (DSS)** berbasis web interaktif ini dirancang untuk memetakan **18 Kecamatan di Kota Palembang** ke dalam **3 Zona Prioritas Penyaluran Bantuan Sosial (Bansos)** secara objektif dan saintifik menggunakan **Algoritma K-Means Clustering** serta pembobotan *Composite Vulnerability Index (CVI)*.
 
 ### 🎨 Pengelompokan Wilayah:
-- 🔴 **Cluster 0 (Prioritas Tinggi / Darurat)**: Wilayah paling rentan (Kertapati, Gandus, Seberang Ulu I, Seberang Ulu II). Harus diprioritaskan dapet bansos duluan.
-- 🟡 **Cluster 1 (Prioritas Sedang / Waspada)**: Wilayah dengan tingkat kesejahteraan menengah.
-- 🟢 **Cluster 2 (Prioritas Rendah / Mandiri)**: Wilayah relatif sejahtera dan mandiri (Bukit Kecil, Ilir Timur I, II, III).
+- 🔴 **Cluster 0 (Prioritas Tinggi / Darurat)**: Wilayah paling rentan (Kertapati, Gandus, Seberang Ulu I, Seberang Ulu II). Memperoleh porsi bantuan utama (60% pagu).
+- 🟡 **Cluster 1 (Prioritas Sedang / Waspada)**: Wilayah dengan tingkat kerentanan menengah (30% pagu).
+- 🟢 **Cluster 2 (Prioritas Rendah / Mandiri)**: Wilayah relatif sejahtera dan mandiri (10% pagu).
+
+---
+
+## 👥 Dua Aktor Sistem (Sesuai Usecase Diagram Gambar 3.1)
+
+Sistem membedakan hak akses dan menu kerja secara spesifik untuk 2 peran pengguna:
+
+| Peran Aktor | Username / Password | Hak Akses & Fitur Utama |
+|---|---|---|
+| 👨‍💻 **Admin / Petugas Kesra** | `admin` / `admin123` | • Memilih & Mengunggah Dataset BPS (CSV/Excel)<br>• Menjalankan Engine Pemrosesan K-Means<br>• Matriks Jarak Euclidean & Iterasi $d(x, c)$<br>• Pengujian Validasi Ilmiah (Elbow, Silhouette, DBI, CHI)<br>• Analisis Tren Multi-Tahun (2023 vs 2025)<br>• Generator Teks Skripsi Bab 4 Otomatis<br>• Live Database Inspector SQLite |
+| 🏛️ **Pimpinan / Pengambil Keputusan** | `pimpinan` / `pimpinan123` | • Dashboard Ringkasan Eksekutif Zonasi Wilayah<br>• Peta Geospasial Interaktif Zonasi Palembang<br>• **Simulator Alokasi Anggaran Bansos (DSS Core)** (Input Anggaran Rp & Kuota KK)<br>• Profiler & Deep Dive Komparasi 18 Kecamatan<br>• Radar Chart Karakteristik Klaster<br>• Pusat Download Laporan Eksekutif (.xlsx) |
+
+---
+
+## 🗄️ Database Relasional (SQLite: `bansos_palembang.db`)
+
+Sistem menggunakan **SQLite** sebagai basis data relasional lokal yang mengimplementasikan rancangan **Entity Relationship Diagram (ERD)** pada Bab 3 Skripsi:
+1. `USERS`: Autentikasi dan hak akses aktor sistem (Admin vs Pimpinan).
+2. `KECAMATAN`: Data master 18 kecamatan dan koordinat geospasial (Latitude, Longitude).
+3. `DATA_INDIKATOR_BPS`: Data 7 indikator statistik kemiskinan dan kesejahteraan BPS.
+4. `KLASTER_PRIORITAS`: Master kategori klaster, bobot persentase, dan rekomendasi intervensi.
+5. `HASIL_CLUSTERING`: Riwayat hasil klasterisasi K-Means, skor CVI, dan jarak ke centroid.
+6. `SIMULASI_ALOKASI_BANSOS`: Arsip hasil perhitungan simulator alokasi anggaran dan kuota KK.
+7. `LAPORAN_EXPORT`: Log audit berkas laporan yang digenerate oleh pengguna.
 
 ---
 
@@ -39,28 +64,17 @@ Website akan otomatis terbuka di browser Anda pada alamat: `http://localhost:850
 ```
 d:\websyahril\
 ├── app.py                     # Entry point utama dashboard Streamlit UI
-├── clustering_engine.py       # Engine AI (MinMax Normalization, K-Means, Elbow & Silhouette)
-├── visualization_helper.py    # Modul Grafik Plotly & Peta Tematik Folium Palembang
-├── export_helper.py           # Modul Ekspor Excel & Draft Teks Laporan Skripsi Bab 4
+├── auth_helper.py             # Modul Autentikasi & Multi-Aktor (Admin vs Pimpinan)
+├── database.py                # Database SQLite Engine (ERD Schema & CRUD)
+├── clustering_engine.py       # Engine AI (MinMax Scaling, K-Means, CVI, Elbow & Silhouette)
+├── visualization_helper.py    # Modul Grafik Plotly & Peta Tematik Spasial Folium
+├── dss_simulator.py           # Engine DSS Simulasi Alokasi Dana Rp & Kuota KK
+├── export_helper.py           # Modul Ekspor Excel Multi-Sheet & Draft Teks Bab 4
 ├── requirements.txt           # File daftar library dependency Python
 ├── data/
-│   └── palembang_bps_data.csv # Dataset bawaan 18 Kecamatan Palembang (7 Indikator BPS)
-└── README.md                  # Panduan penggunaan proyek
+│   ├── bansos_palembang.db    # Database SQLite Utama
+│   ├── palembang_bps_data.csv # Dataset BPS 2023/2024
+│   ├── palembang_bps_data_2025_2026.csv # Dataset Pemutakhiran Kesra 2025/2026
+│   └── *.xlsx                 # File Master Data Statistik & Hasil Clustering
+└── README.md                  # Dokumentasi Proyek
 ```
-
----
-
-## 🔥 Fitur Utama Web Dashboard:
-1. **Interactive Folium Map**: Peta Palembang interaktif dengan marker warna zonasi (Merah, Kuning, Hijau) dan popup data detail per kecamatan.
-2. **Dynamic K-Means Parameter Controls**: Slider penyesuaian jumlah klaster $K$ dan pemilih indikator pada sidebar.
-3. **Dual Data Input**:
-   - Pilihan menggunakan **Dataset BPS Palembang Bawaan** (langsung jalan 100%).
-   - Fitur **Upload Custom File Excel/CSV** jika ada pembaruan data dari BPS/Dinsos.
-   - Tombol **Download Template CSV**.
-4. **Pembuktian Ilmiah (Uji K Optimal)**:
-   - **Grafik Metode Elbow (WCSS)**.
-   - **Grafik & Nilai Silhouette Score** (Validasi kecocokan klaster).
-   - Metrik Tambahan: *Davies-Bouldin Index* & *Calinski-Harabasz Index*.
-5. **Amunisi Laporan Skripsi Bab 4**:
-   - Draft narasi ilmiah Bab 4 otomatis yang tinggal di-copy paste ke MS Word.
-   - Tombol **Export Laporan Lengkap (.xlsx)** dengan multi-sheet (Hasil Cluster, Profil Centroid, Metrik Validasi).

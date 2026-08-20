@@ -38,8 +38,13 @@ def preprocess_data(df: pd.DataFrame, feature_cols: list = None):
     if feature_cols is None:
         feature_cols = [c for c in INDICATORS if c in df.columns]
     
+    # Defensive type conversion to float
+    df_features = df[feature_cols].copy()
+    for col in feature_cols:
+        df_features[col] = pd.to_numeric(df_features[col], errors='coerce').fillna(0.0)
+
     scaler = MinMaxScaler()
-    scaled_array = scaler.fit_transform(df[feature_cols])
+    scaled_array = scaler.fit_transform(df_features)
     df_scaled = pd.DataFrame(scaled_array, columns=feature_cols, index=df.index)
     return df_scaled, scaler, feature_cols
 
@@ -126,10 +131,23 @@ def run_kmeans_clustering(df_raw: pd.DataFrame, n_clusters: int = 3, feature_col
     df_result['Jarak_Terdekat_d_min'] = ordered_distances.min(axis=1).round(4)
     
     # Scientific Validation Metrics
-    sil_score = float(silhouette_score(df_scaled, ordered_labels)) if n_clusters > 1 else 0.0
-    sil_samples = silhouette_samples(df_scaled, ordered_labels) if n_clusters > 1 else np.zeros(len(df_raw))
-    db_score = float(davies_bouldin_score(df_scaled, ordered_labels)) if n_clusters > 1 else 0.0
-    ch_score = float(calinski_harabasz_score(df_scaled, ordered_labels)) if n_clusters > 1 else 0.0
+    n_distinct_labels = len(np.unique(ordered_labels))
+    if n_distinct_labels > 1 and n_distinct_labels < len(df_raw):
+        try:
+            sil_score = float(silhouette_score(df_scaled, ordered_labels))
+            sil_samples = silhouette_samples(df_scaled, ordered_labels)
+            db_score = float(davies_bouldin_score(df_scaled, ordered_labels))
+            ch_score = float(calinski_harabasz_score(df_scaled, ordered_labels))
+        except Exception:
+            sil_score = 0.0
+            sil_samples = np.zeros(len(df_raw))
+            db_score = 0.0
+            ch_score = 0.0
+    else:
+        sil_score = 0.0
+        sil_samples = np.zeros(len(df_raw))
+        db_score = 0.0
+        ch_score = 0.0
     
     return {
         'df_result': df_result,
@@ -164,10 +182,14 @@ def compute_elbow_and_silhouette_range(df_raw: pd.DataFrame, max_k: int = 8, fea
         labels = km.fit_predict(df_scaled)
         wcss.append(float(km.inertia_))
         
-        if k >= 2 and k < len(df_raw):
-            score = float(silhouette_score(df_scaled, labels))
-            db = float(davies_bouldin_score(df_scaled, labels))
-            ch = float(calinski_harabasz_score(df_scaled, labels))
+        n_unique_l = len(np.unique(labels))
+        if n_unique_l > 1 and n_unique_l < len(df_raw):
+            try:
+                score = float(silhouette_score(df_scaled, labels))
+                db = float(davies_bouldin_score(df_scaled, labels))
+                ch = float(calinski_harabasz_score(df_scaled, labels))
+            except Exception:
+                score, db, ch = 0.0, 0.0, 0.0
             silhouettes.append(score)
             dbi_list.append(db)
             ch_list.append(ch)
