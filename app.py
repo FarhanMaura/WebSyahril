@@ -38,8 +38,13 @@ from visualization_helper import (
     plot_scatter_2d,
     plot_radar_summary,
     create_palembang_map,
+    create_kesra_bansos_map,
+    plot_bansos_recipient_ranking,
+    plot_bansos_eligibility_donut,
+    plot_kesra_suitability_quadrant,
     CLUSTER_COLORS,
-    CLUSTER_NAMES
+    CLUSTER_NAMES,
+    BANSOS_ELIGIBILITY_CONFIG
 )
 from export_helper import export_results_to_excel, generate_bab4_narration
 from dss_simulator import simulate_bansos_allocation
@@ -1056,6 +1061,168 @@ Seluruh tahapan algoritma (Membaca Excel ➔ Normalisasi Min-Max ➔ Inisialisas
                 st.success("✅ Hasil klasterisasi berhasil diarsipkan ke tabel `hasil_clustering` di database!")
 
 
+def render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_prefix="adm_map"):
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); padding: 18px 24px; border-radius: 12px; color: white; margin-bottom: 20px; border-left: 5px solid #EF4444; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.25);">
+        <h3 style="margin: 0 0 6px 0; font-size: 19px; color: #F8FAFC; display: flex; align-items: center; gap: 8px;">
+            <span>🗺️</span> <span>Peta & Grafik Wilayah Penerima Bantuan Sesuai Data Statistik Kesra</span>
+        </h3>
+        <p style="margin: 0; font-size: 13px; color: #94A3B8; line-height: 1.5;">
+            Pemetaan geospasial tematik dan grafik komparasi 18 Kecamatan Kota Palembang yang berhak menerima bantuan sosial. Penentuan kelayakan didasarkan secara objektif pada pembobotan indikator statistik Kesra (beban kemiskinan, pengangguran, pendapatan, IPM) serta zonasi klaster K-Means.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Calculate Key Metrics for Social Assistance Recipients
+    c0_df = df_result[df_result['Cluster'] == 0]
+    c1_df = df_result[df_result['Cluster'] == 1]
+    c2_df = df_result[df_result['Cluster'] == 2] if 2 in df_result['Cluster'].values else pd.DataFrame()
+
+    total_c0_kec = len(c0_df)
+    total_c0_miskin = int(c0_df['Jumlah_Penduduk_Miskin'].sum()) if not c0_df.empty else 0
+    top_kec = df_result.sort_values(by='Skor_Kerentanan', ascending=False).iloc[0]
+    top_kec_name = top_kec['Kecamatan']
+    top_kec_cvi = top_kec['Skor_Kerentanan']
+    top_kec_miskin = int(top_kec['Jumlah_Penduduk_Miskin'])
+
+    # 4 Executive Summary Cards
+    col_k1, col_k2, col_k3, col_k4 = st.columns(4)
+    with col_k1:
+        st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #EF4444;">
+<div class="metric-title">🔴 Wilayah Wajib Bansos</div>
+<div class="metric-value" style="color: #EF4444;">{total_c0_kec} <span style="font-size:13px; color:#64748B;">Kecamatan</span></div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">Prioritas 1 (Darurat - Pagu 60%)</div>
+</div>""", unsafe_allow_html=True)
+
+    with col_k2:
+        st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #3B82F6;">
+<div class="metric-title">👥 Beban Jiwa Miskin Darurat</div>
+<div class="metric-value" style="color: #3B82F6;">{total_c0_miskin:,} <span style="font-size:13px; color:#64748B;">Jiwa</span></div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">Terkonsentrasi di Zona Prioritas 1</div>
+</div>""", unsafe_allow_html=True)
+
+    with col_k3:
+        st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #DC2626;">
+<div class="metric-title">🎯 Wilayah Paling Mendesak (Top 1)</div>
+<div class="metric-value" style="font-size:17px; color: #DC2626;">Kec. {top_kec_name}</div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">{top_kec_miskin:,} Jiwa (CVI: {top_kec_cvi:.3f})</div>
+</div>""", unsafe_allow_html=True)
+
+    with col_k4:
+        st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #F59E0B;">
+<div class="metric-title">🟡 Penerima Bansos Bersyarat</div>
+<div class="metric-value" style="color: #D97706;">{len(c1_df)} <span style="font-size:13px; color:#64748B;">Kecamatan</span></div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">Prioritas 2 (Waspada - Pagu 30%)</div>
+</div>""", unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Interactive Controls Filter Bar
+    c_flt1, c_flt2 = st.columns([1.2, 1.2])
+    with c_flt1:
+        sel_filter = st.selectbox(
+            "🎯 Filter Kategori Kelayakan Wilayah:",
+            options=[
+                "Semua Wilayah (18 Kecamatan)",
+                "🔴 Prioritas 1 (Wajib Terima Bansos)",
+                "🟡 Prioritas 2 (Penerima Bansos Bersyarat)",
+                "🟢 Prioritas 3 (Wilayah Mandiri / Terbatas)"
+            ],
+            index=0,
+            key=f"{key_prefix}_filter_kelayakan"
+        )
+    with c_flt2:
+        available_metrics = [c for c in ['Jumlah_Penduduk_Miskin', 'Skor_Kerentanan', 'Tingkat_Pengangguran', 'Jumlah_KK_Penerima_Bansos'] if c in df_result.columns]
+        sel_metric = st.selectbox(
+            "📏 Skala Ukuran Lingkaran (Bubble Size):",
+            options=available_metrics,
+            index=0,
+            format_func=lambda x: {
+                'Jumlah_Penduduk_Miskin': 'Jumlah Penduduk Miskin (Jiwa)',
+                'Skor_Kerentanan': 'Skor Kerentanan Komposit (CVI)',
+                'Tingkat_Pengangguran': 'Tingkat Pengangguran (%)',
+                'Jumlah_KK_Penerima_Bansos': 'Jumlah KK Penerima Bansos Eksisting'
+            }.get(x, x),
+            key=f"{key_prefix}_bubble_metric"
+        )
+
+    # Row 1: Map (Left) & Ranking Chart (Right) Side-by-Side
+    col_map, col_chart = st.columns([1.15, 0.85])
+
+    with col_map:
+        st.subheader("📍 Peta Geospasial Wilayah Penerima Bantuan (Peta Baru)")
+        st.caption("Klik marker kecamatan untuk melihat rincian indikator statistik Kesra & paket rekomendasi bantuan.")
+        folium_map = create_kesra_bansos_map(df_result, filter_status=sel_filter, bubble_metric=sel_metric)
+        st_folium(folium_map, width="100%", height=530, key=f"{key_prefix}_folium_map")
+
+    with col_chart:
+        st.subheader("📊 Peta Grafik Peringkat Kelayakan")
+        st.caption("Urutan kecamatan dari beban kerentanan tertinggi yang wajib dan sesuai memperoleh bansos.")
+        fig_ranking = plot_bansos_recipient_ranking(df_result)
+        st.plotly_chart(fig_ranking, use_container_width=True, key=f"{key_prefix}_plot_ranking")
+
+    st.markdown("---")
+
+    # Row 2: Secondary Graphics (Donut Proportion & Kesra Suitability Quadrant)
+    st.subheader("📈 Analisis Kesesuaian Statistik Kesra Terhadap Penerima Bantuan")
+    st.caption("Validasi kesesuaian penetapan wilayah berdasarkan korelasi indikator kemiskinan dan kemampuan ekonomi daerah.")
+
+    col_g1, col_g2 = st.columns([0.85, 1.15])
+    with col_g1:
+        fig_donut = plot_bansos_eligibility_donut(df_result)
+        st.plotly_chart(fig_donut, use_container_width=True, key=f"{key_prefix}_plot_donut")
+
+    with col_g2:
+        fig_quad = plot_kesra_suitability_quadrant(df_result)
+        st.plotly_chart(fig_quad, use_container_width=True, key=f"{key_prefix}_plot_quad")
+
+    st.markdown("---")
+
+    # Row 3: Comprehensive Audit Table of Assistance Eligibility
+    st.subheader("📋 Tabel Transparansi & Kesesuaian Wilayah Penerima Bantuan Sosial")
+    st.write("Daftar lengkap 18 kecamatan beserta status kelayakan, alasan kesesuaian data statistik Kesra, dan rekomendasi program intervensi:")
+
+    table_data = []
+    for _, r in df_result.sort_values(by='Skor_Kerentanan', ascending=False).iterrows():
+        c_id = int(r['Cluster'])
+        cfg = BANSOS_ELIGIBILITY_CONFIG.get(c_id, BANSOS_ELIGIBILITY_CONFIG[1])
+        table_data.append({
+            'Kecamatan': r['Kecamatan'],
+            'Status Kelayakan Bansos': cfg['status'],
+            'Kesesuaian Data Kesra': cfg['kesesuaian_kesra'],
+            'Penduduk Miskin (Jiwa)': int(r.get('Jumlah_Penduduk_Miskin', 0)),
+            'Pengangguran (%)': float(r.get('Tingkat_Pengangguran', 0)),
+            'Pendapatan (Rp)': int(r.get('Pendapatan_Rata_Rata', 0)),
+            'Skor CVI': float(r.get('Skor_Kerentanan', 0.0)),
+            'Pagu Rekomendasi': cfg['pagu_pct'],
+            'Paket Intervensi Bansos': cfg['rekomendasi']
+        })
+
+    df_eligibility_table = pd.DataFrame(table_data)
+
+    st.dataframe(
+        df_eligibility_table.style.format({
+            'Penduduk Miskin (Jiwa)': '{:,} Jiwa',
+            'Pengangguran (%)': '{:.2f} %',
+            'Pendapatan (Rp)': 'Rp {:,.0f}',
+            'Skor CVI': '{:.4f}'
+        }).background_gradient(cmap='Reds', subset=['Skor CVI', 'Penduduk Miskin (Jiwa)']),
+        use_container_width=True,
+        height=420
+    )
+
+    # CSV Download Button for this table
+    csv_buf = io.StringIO()
+    df_eligibility_table.to_csv(csv_buf, index=False)
+    st.download_button(
+        label="📥 Unduh Data Kesesuaian Wilayah Penerima Bansos (.csv)",
+        data=csv_buf.getvalue(),
+        file_name="Kesesuaian_Penerima_Bansos_Palembang_Kesra.csv",
+        mime="text/csv",
+        use_container_width=True,
+        key=f"{key_prefix}_dl_csv"
+    )
+
 # Synchronize execution stage for tab gating
 current_stage = st.session_state.get('kmeans_stage', 0)
 current_step = current_stage
@@ -1064,13 +1231,14 @@ current_step = current_stage
 # ROLE 1: ADMIN / PETUGAS KESRA VIEW
 # =============================================================================
 if is_admin:
-    adm_tab1, adm_tab2, adm_tab3, adm_tab4, adm_tab5, adm_tab6 = st.tabs([
+    adm_tab1, adm_tab2, adm_tab3, adm_tab4, adm_tab5, adm_tab6, adm_tab7 = st.tabs([
         "📁 1. Data Excel Kesra",
         "🔄 2. Alur Proses K-Means (Step-by-Step)",
         "🧪 3. Uji Validasi Ilmiah",
-        "🗺️ 4. Peta Geospasial Palembang",
-        "📊 5. Radar & Karakteristik Wilayah",
-        "💾 6. Database & Generator Bab 4"
+        "🗺️ 4. Peta Geospasial (Peta Lama)",
+        "🎯 5. Peta & Grafik Kelayakan Bansos (Peta Baru)",
+        "📊 6. Radar & Karakteristik Wilayah",
+        "💾 7. Database & Generator Bab 4"
     ])
 
     # ADMIN TAB 1: DATASET MANAGEMENT
@@ -1142,38 +1310,46 @@ Data mentah di atas (18 Kecamatan, {len(selected_indicators)} Indikator) siap di
             st.subheader("📊 Tabel Evaluasi Rentang K (1 - 8)")
             st.dataframe(elbow_df.style.highlight_max(subset=['Silhouette_Score'], color='#D1FAE5'), use_container_width=True)
 
-    # ADMIN TAB 4: SPATIAL MAP
+    # ADMIN TAB 4: SPATIAL MAP (PETA LAMA)
     with adm_tab4:
         if current_step < 6:
-            render_kmeans_required_notice("Peta Geospasial Palembang", "adm_tab4")
+            render_kmeans_required_notice("Peta Geospasial (Peta Lama)", "adm_tab4")
         else:
+            st.info("ℹ️ **Halaman Peta Standar (Peta Lama):** Menampilkan sebaran titik spasial 18 kecamatan Kota Palembang berdasarkan 3 klaster K-Means dan analisis grafik distribusi per-indikator.")
             col_m1, col_m2 = st.columns([1.2, 0.8])
             with col_m1:
-                st.subheader("🗺️ Peta Tematik Geospasial Palembang")
-                folium_map = create_palembang_map(df_result)
-                st_folium(folium_map, width="100%", height=480)
+                st.subheader("🗺️ Peta Tematik Geospasial Palembang (Peta Standar)")
+                folium_map_old = create_palembang_map(df_result)
+                st_folium(folium_map_old, width="100%", height=480, key="adm_old_folium_map")
             with col_m2:
                 st.subheader("📊 Distribusi Indikator")
                 sel_feat = st.selectbox("Pilih Indikator Visualisasi:", options=selected_indicators, index=0, key="adm_sel_feat")
                 st.plotly_chart(plot_cluster_bar(df_result, feature=sel_feat), use_container_width=True, key="adm_tab4_cluster_bar")
 
-    # ADMIN TAB 5: RADAR & SCATTER
+    # ADMIN TAB 5: PETA & GRAFIK WILAYAH PENERIMA BANSOS (PETA BARU)
     with adm_tab5:
         if current_step < 6:
-            render_kmeans_required_notice("Radar & Karakteristik Wilayah", "adm_tab5")
+            render_kmeans_required_notice("Peta & Grafik Kelayakan Bansos Kesra (Peta Baru)", "adm_tab5")
+        else:
+            render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_prefix="adm_map_new")
+
+    # ADMIN TAB 6: RADAR & SCATTER
+    with adm_tab6:
+        if current_step < 6:
+            render_kmeans_required_notice("Radar & Karakteristik Wilayah", "adm_tab6")
         else:
             col_r1, col_r2 = st.columns(2)
             with col_r1:
                 st.subheader("📌 Radar Profile Antar Klaster")
-                st.plotly_chart(plot_radar_summary(model_results['cluster_summary'], selected_indicators), use_container_width=True, key="adm_tab5_radar_summary")
+                st.plotly_chart(plot_radar_summary(model_results['cluster_summary'], selected_indicators), use_container_width=True, key="adm_tab6_radar_summary")
             with col_r2:
                 st.subheader("🔍 Scatter Plot Hubungan Indikator")
                 scat_x = st.selectbox("Sumbu X:", options=selected_indicators, index=min(0, len(selected_indicators)-1), key="adm_scat_x")
                 scat_y = st.selectbox("Sumbu Y:", options=selected_indicators, index=min(1, len(selected_indicators)-1), key="adm_scat_y")
-                st.plotly_chart(plot_scatter_2d(df_result, scat_x, scat_y), use_container_width=True, key="adm_tab5_scatter_2d")
+                st.plotly_chart(plot_scatter_2d(df_result, scat_x, scat_y), use_container_width=True, key="adm_tab6_scatter_2d")
 
-    # ADMIN TAB 6: DATABASE & BAB 4 GENERATOR
-    with adm_tab6:
+    # ADMIN TAB 7: DATABASE & BAB 4 GENERATOR
+    with adm_tab7:
         st.subheader("💾 Database SQLite & Generator Naskah Skripsi Bab 4")
         st.write("Manajemen arsip basis data dan fasilitas penyusunan draf teks Bab 4 skripsi otomatis.")
 
@@ -1187,7 +1363,7 @@ Data mentah di atas (18 Kecamatan, {len(selected_indicators)} Indikator) siap di
             file_name="Draft_Skripsi_Bab4_Bansos_Palembang.txt",
             mime="text/plain",
             use_container_width=True,
-            key="adm_tab6_dl_bab4"
+            key="adm_tab7_dl_bab4"
         )
 
         st.markdown("---")
@@ -1199,13 +1375,14 @@ Data mentah di atas (18 Kecamatan, {len(selected_indicators)} Indikator) siap di
 # ROLE 2: PIMPINAN / PENGAMBIL KEPUTUSAN VIEW
 # =============================================================================
 else:
-    pim_tab1, pim_tab2, pim_tab3, pim_tab4, pim_tab5, pim_tab6 = st.tabs([
+    pim_tab1, pim_tab2, pim_tab3, pim_tab4, pim_tab5, pim_tab6, pim_tab7 = st.tabs([
         "🏛️ 1. Dashboard Eksekutif",
         "🔄 2. Transparansi Proses K-Means",
-        "🗺️ 3. Peta Spasial Palembang",
-        "💰 4. Simulator Alokasi Bansos (DSS)",
-        "🔍 5. Profiler Per-Kecamatan",
-        "📥 6. Unduh Laporan Resmi"
+        "🗺️ 3. Peta Spasial (Peta Lama)",
+        "🎯 4. Peta & Grafik Kelayakan Bansos (Peta Baru)",
+        "💰 5. Simulator Alokasi Bansos (DSS)",
+        "🔍 6. Profiler Per-Kecamatan",
+        "📥 7. Unduh Laporan Resmi"
     ])
 
     # PIMPINAN TAB 1: EXECUTIVE DASHBOARD
@@ -1280,27 +1457,35 @@ else:
     with pim_tab2:
         render_step_by_step_kmeans_process(prefix="pim_step")
 
-    # PIMPINAN TAB 3: SPATIAL MAP
+    # PIMPINAN TAB 3: SPATIAL MAP (PETA LAMA)
     with pim_tab3:
         if current_step < 6:
-            render_kmeans_required_notice("Peta Spasial Palembang", "pim_tab3")
+            render_kmeans_required_notice("Peta Spasial (Peta Lama)", "pim_tab3")
         else:
+            st.info("ℹ️ **Halaman Peta Standar (Peta Lama):** Menampilkan sebaran titik spasial 18 kecamatan Kota Palembang berdasarkan 3 klaster K-Means dan analisis grafik distribusi per-indikator.")
             col_m_left, col_m_right = st.columns([1.2, 0.8])
             with col_m_left:
-                st.subheader("🗺️ Peta Tematik Geospasial Palembang")
+                st.subheader("🗺️ Peta Tematik Geospasial Palembang (Standar)")
                 st.caption("Peta interaktif berbasis koordinat 18 kecamatan. Klik lingkaran marker untuk rincian data.")
-                folium_map = create_palembang_map(df_result)
-                st_folium(folium_map, width="100%", height=480)
+                folium_map_old = create_palembang_map(df_result)
+                st_folium(folium_map_old, width="100%", height=480, key="pim_old_folium_map")
                 
             with col_m_right:
                 st.subheader("📊 Analisis Distribusi Indikator")
                 sel_f = st.selectbox("Pilih Indikator Ditampilkan:", options=selected_indicators, index=0, key="pim_sel_f")
                 st.plotly_chart(plot_cluster_bar(df_result, feature=sel_f), use_container_width=True, key="pim_tab3_cluster_bar")
 
-    # PIMPINAN TAB 4: DSS BUDGET & QUOTA SIMULATOR
+    # PIMPINAN TAB 4: PETA & GRAFIK WILAYAH PENERIMA BANSOS (PETA BARU)
     with pim_tab4:
         if current_step < 6:
-            render_kmeans_required_notice("Simulator Alokasi Anggaran DSS", "pim_tab4")
+            render_kmeans_required_notice("Peta & Grafik Kelayakan Bansos Kesra (Peta Baru)", "pim_tab4")
+        else:
+            render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_prefix="pim_map_new")
+
+    # PIMPINAN TAB 5: DSS BUDGET & QUOTA SIMULATOR
+    with pim_tab5:
+        if current_step < 6:
+            render_kmeans_required_notice("Simulator Alokasi Anggaran DSS", "pim_tab5")
         else:
             st.subheader("💰 Simulator Sistem Pendukung Keputusan (DSS) Alokasi Bansos")
             st.write("Pimpinan memasukkan total anggaran (Rp) dan target kuota (KK). Sistem menghitung distribusi yang adil dan proporsional sesuai tingkat kerentanan.")
@@ -1340,7 +1525,7 @@ else:
                         'Prioritas Rendah (Mandiri)': '#10B981'
                     }
                 )
-                st.plotly_chart(pie_budget, use_container_width=True, key="pim_tab4_pie_budget")
+                st.plotly_chart(pie_budget, use_container_width=True, key="pim_tab5_pie_budget")
                 
             with col_pie2:
                 pie_quota = px.pie(
@@ -1355,7 +1540,7 @@ else:
                         'Prioritas Rendah (Mandiri)': '#10B981'
                     }
                 )
-                st.plotly_chart(pie_quota, use_container_width=True, key="pim_tab4_pie_quota")
+                st.plotly_chart(pie_quota, use_container_width=True, key="pim_tab5_pie_quota")
                 
             st.subheader("📋 Tabel Rekomendasi Alokasi Dana & Kuota Per Kecamatan")
             show_sim_cols = ['Kecamatan', 'Kategori_Prioritas', 'Skor_Kerentanan', 'Alokasi_Anggaran_Rp', 'Alokasi_Kuota_KK', 'Nilai_Bantuan_Per_KK']
@@ -1370,14 +1555,14 @@ else:
                 use_container_width=True
             )
 
-            if st.button("💾 Arsipkan Hasil Simulasi Ini ke Database", type="primary", key="pim_tab4_save_sim_db"):
+            if st.button("💾 Arsipkan Hasil Simulasi Ini ke Database", type="primary", key="pim_tab5_save_sim_db"):
                 save_simulation_results_to_db(df_simulated, "Terkini", budget_input, quota_input, user_display_name)
                 st.success("✅ Skenario simulasi berhasil diarsipkan ke tabel `simulasi_alokasi_bansos` di database!")
 
-    # PIMPINAN TAB 5: PROFILER PER KECAMATAN
-    with pim_tab5:
+    # PIMPINAN TAB 6: PROFILER PER KECAMATAN
+    with pim_tab6:
         if current_step < 6:
-            render_kmeans_required_notice("Profiler Wilayah Kecamatan", "pim_tab5")
+            render_kmeans_required_notice("Profiler Wilayah Kecamatan", "pim_tab6")
         else:
             st.subheader("🔍 Profiler & Inspector 18 Kecamatan")
             selected_kec_inspect = st.selectbox("Pilih Kecamatan Ditinjau:", options=df_result['Kecamatan'].unique(), key="pim_kec_insp")
@@ -1415,8 +1600,8 @@ else:
             - **Intervensi Utama**: Penanganan tingkat pengangguran ({pengangguran_str}) dan peningkatan alokasi bansos PKH/BPNT secara bertahap.
             """)
 
-    # PIMPINAN TAB 6: EXECUTIVE EXPORT
-    with pim_tab6:
+    # PIMPINAN TAB 7: EXECUTIVE EXPORT
+    with pim_tab7:
         st.subheader("📥 Pusat Unduhan Laporan Eksekutif Resmi (.xlsx)")
         st.write("Unduh berkas laporan hasil analisis klasterisasi K-Means yang lengkap dengan multi-sheet (termasuk jejak proses iterasi K-Means dan normalisasi) untuk dasar penetapan Surat Keputusan (SK) Walikota.")
         
@@ -1429,7 +1614,7 @@ else:
                 file_name="Laporan_Eksekutif_Bansos_Palembang.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True,
-                key="pim_tab6_dl_excel"
+                key="pim_tab7_dl_excel"
             ):
                 log_export_to_db("Excel", "Laporan_Eksekutif_Bansos_Palembang.xlsx", "Terkini", user_display_name)
                 
@@ -1442,5 +1627,5 @@ else:
                         file_name="Data_Statistik_BPS_Kesra_Palembang.xlsx",
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                         use_container_width=True,
-                        key="pim_tab6_dl_master"
+                        key="pim_tab7_dl_master"
                     )

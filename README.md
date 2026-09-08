@@ -22,8 +22,8 @@ Sistem membedakan hak akses dan menu kerja secara spesifik untuk 2 peran penggun
 
 | Peran Aktor | Username / Password | Hak Akses & Fitur Utama |
 |---|---|---|
-| 👨‍💻 **Admin / Petugas Kesra** | `admin` / `admin123` | • Memilih & Mengunggah Dataset BPS (CSV/Excel)<br>• Menjalankan Engine Pemrosesan K-Means<br>• Matriks Jarak Euclidean & Iterasi $d(x, c)$<br>• Pengujian Validasi Ilmiah (Elbow, Silhouette, DBI, CHI)<br>• Analisis Tren Multi-Tahun (2023 vs 2025)<br>• Generator Teks Skripsi Bab 4 Otomatis<br>• Live Database Inspector SQLite |
-| 🏛️ **Pimpinan / Pengambil Keputusan** | `pimpinan` / `pimpinan123` | • Dashboard Ringkasan Eksekutif Zonasi Wilayah<br>• Peta Geospasial Interaktif Zonasi Palembang<br>• **Simulator Alokasi Anggaran Bansos (DSS Core)** (Input Anggaran Rp & Kuota KK)<br>• Profiler & Deep Dive Komparasi 18 Kecamatan<br>• Radar Chart Karakteristik Klaster<br>• Pusat Download Laporan Eksekutif (.xlsx) |
+| 👨‍💻 **Admin / Petugas Kesra** | `admin` / `admin123` | • Memilih & Mengunggah Dataset BPS (CSV/Excel)<br>• Menjalankan Engine Pemrosesan K-Means<br>• Matriks Jarak Euclidean & Iterasi $d(x, c)$<br>• Pengujian Validasi Ilmiah (Elbow, Silhouette, DBI, CHI)<br>• **Peta Geospasial (Peta Lama)**: Peta tematik standar 18 kecamatan & distribusi indikator<br>• **Peta & Grafik Kelayakan Bansos (Peta Baru)**: Peta geospasial kelayakan, filter status bansos, bar ranking CVI Kesra, donut proporsi, kuadran kesesuaian & tabel audit<br>• Analisis Tren Multi-Tahun (2023 vs 2025)<br>• Generator Teks Skripsi Bab 4 Otomatis<br>• Live Database Inspector SQLite |
+| 🏛️ **Pimpinan / Pengambil Keputusan** | `pimpinan` / `pimpinan123` | • Dashboard Ringkasan Eksekutif Zonasi Wilayah<br>• Transparansi Alur Iterasi K-Means<br>• **Peta Spasial (Peta Lama)**: Peta sebaran spasial standar & grafik indikator<br>• **Peta & Grafik Kelayakan Bansos (Peta Baru)**: Analisis spasial & grafik kelayakan penerima bantuan Kesra<br>• **Simulator Alokasi Anggaran Bansos (DSS Core)** (Input Anggaran Rp & Kuota KK)<br>• Profiler & Deep Dive Komparasi 18 Kecamatan<br>• Radar Chart Karakteristik Klaster<br>• Pusat Download Laporan Eksekutif (.xlsx) |
 
 ---
 
