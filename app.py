@@ -1079,11 +1079,11 @@ def render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_pr
     c2_df = df_result[df_result['Cluster'] == 2] if 2 in df_result['Cluster'].values else pd.DataFrame()
 
     total_c0_kec = len(c0_df)
-    total_c0_miskin = int(c0_df['Jumlah_Penduduk_Miskin'].sum()) if not c0_df.empty else 0
+    total_c0_kk = int(c0_df['Jumlah_KK_Penerima_Bansos'].sum()) if ('Jumlah_KK_Penerima_Bansos' in c0_df.columns and not c0_df.empty) else 0
     top_kec = df_result.sort_values(by='Skor_Kerentanan', ascending=False).iloc[0]
     top_kec_name = top_kec['Kecamatan']
     top_kec_cvi = top_kec['Skor_Kerentanan']
-    top_kec_miskin = int(top_kec['Jumlah_Penduduk_Miskin'])
+    top_kec_kk = int(top_kec.get('Jumlah_KK_Penerima_Bansos', top_kec.get('Jumlah_Penduduk_Miskin', 0)))
 
     # 4 Executive Summary Cards
     col_k1, col_k2, col_k3, col_k4 = st.columns(4)
@@ -1096,16 +1096,16 @@ def render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_pr
 
     with col_k2:
         st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #3B82F6;">
-<div class="metric-title">👥 Beban Jiwa Miskin Darurat</div>
-<div class="metric-value" style="color: #3B82F6;">{total_c0_miskin:,} <span style="font-size:13px; color:#64748B;">Jiwa</span></div>
-<div style="font-size:11px; color:#64748B; margin-top:4px;">Terkonsentrasi di Zona Prioritas 1</div>
+<div class="metric-title">🏠 Kuota Penerima Bansos (KK) Darurat</div>
+<div class="metric-value" style="color: #3B82F6;">{total_c0_kk:,} <span style="font-size:13px; color:#64748B;">KK</span></div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">Kepala Keluarga Terdaftar Zona Prioritas 1</div>
 </div>""", unsafe_allow_html=True)
 
     with col_k3:
         st.markdown(f"""<div class="metric-card" style="border-left: 4px solid #DC2626;">
 <div class="metric-title">🎯 Wilayah Paling Mendesak (Top 1)</div>
 <div class="metric-value" style="font-size:17px; color: #DC2626;">Kec. {top_kec_name}</div>
-<div style="font-size:11px; color:#64748B; margin-top:4px;">{top_kec_miskin:,} Jiwa (CVI: {top_kec_cvi:.3f})</div>
+<div style="font-size:11px; color:#64748B; margin-top:4px;">{top_kec_kk:,} KK Penerima (CVI: {top_kec_cvi:.3f})</div>
 </div>""", unsafe_allow_html=True)
 
     with col_k4:
@@ -1132,32 +1132,32 @@ def render_peta_dan_grafik_wilayah_bansos(df_result, selected_indicators, key_pr
             key=f"{key_prefix}_filter_kelayakan"
         )
     with c_flt2:
-        available_metrics = [c for c in ['Jumlah_Penduduk_Miskin', 'Skor_Kerentanan', 'Tingkat_Pengangguran', 'Jumlah_KK_Penerima_Bansos'] if c in df_result.columns]
+        available_metrics = [c for c in ['Jumlah_KK_Penerima_Bansos', 'Jumlah_Penduduk_Miskin', 'Skor_Kerentanan', 'Tingkat_Pengangguran'] if c in df_result.columns]
         sel_metric = st.selectbox(
             "📏 Skala Ukuran Lingkaran (Bubble Size):",
             options=available_metrics,
             index=0,
             format_func=lambda x: {
+                'Jumlah_KK_Penerima_Bansos': 'Jumlah KK Penerima Bansos Eksisting (KK)',
                 'Jumlah_Penduduk_Miskin': 'Jumlah Penduduk Miskin (Jiwa)',
                 'Skor_Kerentanan': 'Skor Kerentanan Komposit (CVI)',
-                'Tingkat_Pengangguran': 'Tingkat Pengangguran (%)',
-                'Jumlah_KK_Penerima_Bansos': 'Jumlah KK Penerima Bansos Eksisting'
+                'Tingkat_Pengangguran': 'Tingkat Pengangguran (%)'
             }.get(x, x),
             key=f"{key_prefix}_bubble_metric"
         )
 
     # Row 1: Map (Left) & Ranking Chart (Right) Side-by-Side
-    col_map, col_chart = st.columns([1.15, 0.85])
+    col_map, col_chart = st.columns([1.0, 1.0])
 
     with col_map:
         st.subheader("📍 Peta Geospasial Wilayah Penerima Bantuan (Peta Baru)")
         st.caption("Klik marker kecamatan untuk melihat rincian indikator statistik Kesra & paket rekomendasi bantuan.")
         folium_map = create_kesra_bansos_map(df_result, filter_status=sel_filter, bubble_metric=sel_metric)
-        st_folium(folium_map, width="100%", height=530, key=f"{key_prefix}_folium_map")
+        st_folium(folium_map, width="100%", height=620, key=f"{key_prefix}_folium_map")
 
     with col_chart:
-        st.subheader("📊 Peta Grafik Peringkat Kelayakan")
-        st.caption("Urutan kecamatan dari beban kerentanan tertinggi yang wajib dan sesuai memperoleh bansos.")
+        st.subheader("📊 Peta Grafik Jumlah Penerima Bansos (KK)")
+        st.caption("Menampilkan kuota penerima bantuan (KK) per wilayah dari data Kesra sesuai urutan prioritas.")
         fig_ranking = plot_bansos_recipient_ranking(df_result)
         st.plotly_chart(fig_ranking, use_container_width=True, key=f"{key_prefix}_plot_ranking")
 
@@ -1323,7 +1323,8 @@ Data mentah di atas (18 Kecamatan, {len(selected_indicators)} Indikator) siap di
                 st_folium(folium_map_old, width="100%", height=480, key="adm_old_folium_map")
             with col_m2:
                 st.subheader("📊 Distribusi Indikator")
-                sel_feat = st.selectbox("Pilih Indikator Visualisasi:", options=selected_indicators, index=0, key="adm_sel_feat")
+                def_feat_idx = selected_indicators.index('Jumlah_KK_Penerima_Bansos') if 'Jumlah_KK_Penerima_Bansos' in selected_indicators else 0
+                sel_feat = st.selectbox("Pilih Indikator Visualisasi:", options=selected_indicators, index=def_feat_idx, key="adm_sel_feat")
                 st.plotly_chart(plot_cluster_bar(df_result, feature=sel_feat), use_container_width=True, key="adm_tab4_cluster_bar")
 
     # ADMIN TAB 5: PETA & GRAFIK WILAYAH PENERIMA BANSOS (PETA BARU)
@@ -1472,7 +1473,8 @@ else:
                 
             with col_m_right:
                 st.subheader("📊 Analisis Distribusi Indikator")
-                sel_f = st.selectbox("Pilih Indikator Ditampilkan:", options=selected_indicators, index=0, key="pim_sel_f")
+                def_pim_feat_idx = selected_indicators.index('Jumlah_KK_Penerima_Bansos') if 'Jumlah_KK_Penerima_Bansos' in selected_indicators else 0
+                sel_f = st.selectbox("Pilih Indikator Ditampilkan:", options=selected_indicators, index=def_pim_feat_idx, key="pim_sel_f")
                 st.plotly_chart(plot_cluster_bar(df_result, feature=sel_f), use_container_width=True, key="pim_tab3_cluster_bar")
 
     # PIMPINAN TAB 4: PETA & GRAFIK WILAYAH PENERIMA BANSOS (PETA BARU)

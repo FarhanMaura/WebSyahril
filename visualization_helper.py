@@ -111,30 +111,50 @@ def plot_silhouette_chart(elbow_df: pd.DataFrame, selected_k: int = 3):
     )
     return fig
 
-def plot_cluster_bar(df_result: pd.DataFrame, feature: str = 'Jumlah_Penduduk_Miskin'):
+def plot_cluster_bar(df_result: pd.DataFrame, feature: str = 'Jumlah_KK_Penerima_Bansos'):
     """Generates bar chart comparing kecamatan values colored by cluster."""
     df_sorted = df_result.sort_values(by=feature, ascending=True)
     
     colors = [CLUSTER_COLORS.get(c, '#9CA3AF') for c in df_sorted['Cluster']]
     
+    def format_bar_val(x):
+        if not isinstance(x, (int, float)) or pd.isna(x):
+            return str(x)
+        if feature == 'Jumlah_KK_Penerima_Bansos':
+            return f"<b>{int(x):,} KK</b>"
+        elif feature == 'Jumlah_Penduduk_Miskin':
+            return f"<b>{int(x):,} Jiwa</b>"
+        elif feature == 'Pendapatan_Rata_Rata':
+            return f"<b>Rp {int(x):,}</b>"
+        elif feature == 'Tingkat_Pengangguran':
+            return f"<b>{x:.1f}%</b>"
+        elif x > 100:
+            return f"<b>{x:,.0f}</b>"
+        else:
+            return f"<b>{x:.1f}</b>"
+
+    val_max = df_sorted[feature].max() if not df_sorted.empty else 100
+
     fig = gg.Figure()
     fig.add_trace(gg.Bar(
         y=df_sorted['Kecamatan'],
         x=df_sorted[feature],
         orientation='h',
         marker=dict(color=colors),
-        text=df_sorted[feature].apply(lambda x: f"{x:,.0f}" if isinstance(x, (int, float)) and x > 100 else f"{x:.1f}"),
-        textposition='outside'
+        text=df_sorted[feature].apply(format_bar_val),
+        textposition='outside',
+        cliponaxis=False,
+        textfont=dict(color='#0F172A', size=11.5, family='Plus Jakarta Sans, Arial')
     ))
     
     clean_title = feature.replace('_', ' ')
     fig.update_layout(
-        title=dict(text=f'<b>Perbandingan {clean_title} Per Kecamatan</b>', font=dict(size=16)),
-        xaxis=dict(title=clean_title),
-        yaxis=dict(title='Kecamatan'),
+        title=dict(text=f'<b>Perbandingan {clean_title} Per Kecamatan</b>', font=dict(size=15)),
+        xaxis=dict(title=clean_title, range=[0, val_max * 1.25]),
+        yaxis=dict(title='', tickfont=dict(size=12, color='#0F172A', family='Plus Jakarta Sans, Arial')),
         template='plotly_white',
-        height=550,
-        margin=dict(l=40, r=40, t=60, b=40)
+        height=600,
+        margin=dict(l=20, r=40, t=60, b=40)
     )
     return fig
 
@@ -502,22 +522,29 @@ def plot_bansos_recipient_ranking(df_result: pd.DataFrame):
     """
     Peta Grafik Bar Horizontal: Menampilkan seluruh kecamatan diurutkan berdasarkan
     kelayakan penerimaan bantuan sosial dari data statistik Kesra.
+    Label angka KK penerima dan status diletakkan di luar bar agar terbaca sangat jelas & tajam.
     """
     df_sorted = df_result.sort_values(by='Skor_Kerentanan', ascending=True).copy()
     
     colors = [CLUSTER_COLORS.get(int(c), '#9CA3AF') for c in df_sorted['Cluster']]
     
     text_labels = []
+    hover_texts = []
     for _, row in df_sorted.iterrows():
         c_id = int(row['Cluster'])
         cvi = row.get('Skor_Kerentanan', 0.0)
-        miskin = int(row.get('Jumlah_Penduduk_Miskin', 0))
-        if c_id == 0:
-            text_labels.append(f"🔴 WAJIB TERIMA: {miskin:,} Jiwa (CVI: {cvi:.3f})")
-        elif c_id == 1:
-            text_labels.append(f"🟡 BERSYARAT: {miskin:,} Jiwa (CVI: {cvi:.3f})")
-        else:
-            text_labels.append(f"🟢 MANDIRI: {miskin:,} Jiwa (CVI: {cvi:.3f})")
+        kk_penerima = int(row.get('Jumlah_KK_Penerima_Bansos', row.get('Jumlah_Penduduk_Miskin', 0)))
+        badge = "🔴 Wajib" if c_id == 0 else ("🟡 Bersyarat" if c_id == 1 else "🟢 Mandiri")
+        
+        # Label teks di luar bar: tebal, jelas, dan kontras tinggi
+        text_labels.append(f" <b>{kk_penerima:,} KK</b> ({badge})")
+            
+        hover_texts.append(
+            f"<b>Kecamatan {row['Kecamatan']}</b><br>"
+            f"Status Kelayakan: <b>{badge}</b><br>"
+            f"Jumlah Penerima Bansos: <b>{kk_penerima:,} KK</b><br>"
+            f"Skor Kerentanan (CVI): <b>{cvi:.4f}</b>"
+        )
             
     fig = gg.Figure()
     fig.add_trace(gg.Bar(
@@ -529,10 +556,11 @@ def plot_bansos_recipient_ranking(df_result: pd.DataFrame):
             line=dict(color='rgba(15, 23, 42, 0.35)', width=1)
         ),
         text=text_labels,
-        textposition='inside',
-        insidetextanchor='start',
-        insidetextfont=dict(color='white', size=11, family='Plus Jakarta Sans, Arial'),
-        hovertemplate="<b>Kecamatan %{y}</b><br>Skor Kerentanan (CVI): %{x:.4f}<extra></extra>"
+        textposition='outside',
+        cliponaxis=False,
+        textfont=dict(size=12, family='Plus Jakarta Sans, Arial'),
+        hovertext=hover_texts,
+        hoverinfo='text'
     ))
     
     # Threshold indicator line for Priority 1 cut-off
@@ -544,21 +572,28 @@ def plot_bansos_recipient_ranking(df_result: pd.DataFrame):
             line_width=2,
             line_dash="dash",
             line_color="#EF4444",
-            annotation_text="Ambang Batas Wajib Bansos",
-            annotation_position="top left",
-            annotation_font=dict(color="#EF4444", size=10)
+            annotation_text="Batas Wajib Bansos",
+            annotation_position="bottom right",
+            annotation_font=dict(color="#EF4444", size=10.5, family='Plus Jakarta Sans, Arial')
         )
         
     fig.update_layout(
         title=dict(
-            text='<b>📊 Peta Grafik Peringkat Wilayah Berhak Menerima Bansos</b><br><span style="font-size:12px; color:#64748B;">Urutan berdasarkan Indeks Kerentanan Komposit (CVI) & Beban Statistik Kesra</span>',
+            text='<b>📊 Peta Grafik Peringkat Wilayah & Jumlah Penerima Bansos (KK)</b><br><span style="font-size:12px;">Menampilkan kuota penerima bantuan (KK) per wilayah sesuai data Kesra</span>',
             font=dict(size=14)
         ),
-        xaxis=dict(title='Skor Indeks Kerentanan (CVI)', range=[0, max(df_sorted['Skor_Kerentanan'].max() * 1.15, 1.0)]),
-        yaxis=dict(title=''),
+        xaxis=dict(
+            title='Skor Indeks Kerentanan (CVI)',
+            range=[0, max(df_sorted['Skor_Kerentanan'].max() * 1.55, 1.40)],
+            tickfont=dict(size=11)
+        ),
+        yaxis=dict(
+            title='',
+            tickfont=dict(size=12, family='Plus Jakarta Sans, Arial')
+        ),
         template='plotly_white',
-        height=520,
-        margin=dict(l=20, r=20, t=70, b=30)
+        height=620,
+        margin=dict(l=20, r=40, t=75, b=30)
     )
     return fig
 
